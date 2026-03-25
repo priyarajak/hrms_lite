@@ -100,13 +100,6 @@ export default function Employees() {
       placeholder="Employee ID"
       onChange={e => setForm({ ...form, employee_id: e.target.value })}
     />
-
-    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
-      group-hover:opacity-100 group-hover:translate-y-0 
-      group-focus-within:opacity-100 group-focus-within:translate-y-0 
-      transition-all duration-200">
-      Example: EMP001
-    </div>
   </div>
 
   {/* NAME */}
@@ -156,6 +149,9 @@ export default function Employees() {
 
   {/* JOINING DATE */}
   <div className="relative group">
+    <label className="text-sm text-gray-400">
+    Joining Date
+  </label>
     <Input
       type="date"
       value={form.joining_date}
@@ -167,7 +163,7 @@ export default function Employees() {
     <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
       group-hover:opacity-100 group-focus-within:opacity-100 
       transition-all duration-200">
-      Format: dd/mm/yyyy
+      Example: 22/03/2026
     </div>
   </div>
 
