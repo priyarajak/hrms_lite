@@ -38,15 +38,15 @@ export default function Employees() {
   // ADD EMPLOYEE
   const handleAdd = async () => {
     if (
-  !form.employee_id ||
-  !form.full_name ||
-  !form.email ||
-  !form.department ||
-  !form.joining_date
-) {
-  toast.error("All fields are required");
-  return;
-}
+      !form.employee_id ||
+      !form.full_name ||
+      !form.email ||
+      !form.department ||
+      !form.joining_date
+    ) {
+      toast.error("All fields are required");
+      return;
+    }
 
     try {
       await API.post("/employees", form);
@@ -63,13 +63,12 @@ export default function Employees() {
 
       fetchEmployees();
     } catch (err) {
-        const errorMsg =
-  err.response?.data?.detail?.[0]?.msg ||  // validation error
-  err.response?.data?.detail ||           // normal error
-  "Something went wrong";
+      const errorMsg =
+        err.response?.data?.detail?.[0]?.msg ||
+        err.response?.data?.detail ||
+        "Something went wrong";
 
-toast.error(errorMsg);
-      
+      toast.error(errorMsg);
     }
   };
 
@@ -88,6 +87,7 @@ toast.error(errorMsg);
     <div className="max-w-5xl mx-auto space-y-6">
 
       <Header title="Employees" />
+
       {/* ================= FORM ================= */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
 
@@ -117,12 +117,21 @@ toast.error(errorMsg);
             onChange={e => setForm({ ...form, department: e.target.value })}
           />
 
-          <Input
-            type="date"
-            placeholder="Joining date"
-            value={form.joining_date}
-            onChange={e => setForm({ ...form, joining_date: e.target.value })}
-          />
+          {/* 🔥 FIXED DATE INPUT */}
+          <div className="relative">
+            <label className="absolute -top-2 left-3 bg-black px-1 text-xs text-gray-400">
+              Joining Date
+            </label>
+
+            <Input
+              type="date"
+              value={form.joining_date}
+              onChange={e =>
+                setForm({ ...form, joining_date: e.target.value })
+              }
+              className="pt-4"
+            />
+          </div>
 
         </div>
 
@@ -137,7 +146,7 @@ toast.error(errorMsg);
           ))}
         </div>
       ) : employees.length === 0 ? (
-        <p className="text-gray-400">No employees found</p>
+        <p className="text-gray-400 text-center">No employees found</p>
       ) : (
         <>
           {/* ================= DESKTOP TABLE ================= */}
@@ -153,13 +162,7 @@ toast.error(errorMsg);
               </thead>
 
               <tbody>
-                {employees.length === 0 ? (
-        <tr>
-          <td colSpan="4" className="text-center p-6 text-gray-400">
-            No employees found
-          </td>
-        </tr>
-      ) : (employees.map(emp => (
+                {employees.map(emp => (
                   <tr key={emp.id} className="border-t border-white/10 hover:bg-white/5">
                     <td className="p-3">{emp.full_name}</td>
                     <td className="p-3">{emp.email}</td>
@@ -173,32 +176,36 @@ toast.error(errorMsg);
                       </button>
                     </td>
                   </tr>
-                )))}
+                ))}
               </tbody>
             </table>
           </div>
 
           {/* ================= MOBILE CARDS ================= */}
           <div className="md:hidden space-y-3">
-            {employees.map(emp => (
-              <div
-                key={emp.id}
-                className="p-4 bg-white/5 border border-white/10 rounded-xl flex justify-between items-center"
-              >
-                <div>
-                  <p className="font-semibold">{emp.full_name}</p>
-                  <p className="text-sm text-gray-400">{emp.email}</p>
-                  <p className="text-sm">{emp.department}</p>
-                </div>
-
-                <button
-                  onClick={() => handleDelete(emp.employee_id)}
-                  className="p-2 rounded-lg hover:bg-red-500/20"
+            {employees.length === 0 ? (
+              <p className="text-center text-gray-400">No employees found</p>
+            ) : (
+              employees.map(emp => (
+                <div
+                  key={emp.id}
+                  className="p-4 bg-white/5 border border-white/10 rounded-xl flex justify-between items-center"
                 >
-                  <Trash2 size={18} className="text-red-400" />
-                </button>
-              </div>
-            ))}
+                  <div>
+                    <p className="font-semibold">{emp.full_name}</p>
+                    <p className="text-sm text-gray-400">{emp.email}</p>
+                    <p className="text-sm">{emp.department}</p>
+                  </div>
+
+                  <button
+                    onClick={() => handleDelete(emp.employee_id)}
+                    className="p-2 rounded-lg hover:bg-red-500/20"
+                  >
+                    <Trash2 size={18} className="text-red-400" />
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </>
       )}
