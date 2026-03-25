@@ -118,20 +118,21 @@ export default function Employees() {
           />
 
           {/* 🔥 FIXED DATE INPUT */}
-          <div className="relative">
-            <label className="absolute -top-2 left-3 bg-black px-1 text-xs text-gray-400">
-              Joining Date
-            </label>
+          <div className="relative group">
+  <Input
+    type="date"
+    value={form.joining_date}
+    onChange={(e) =>
+      setForm({ ...form, joining_date: e.target.value })
+    }
+    className="w-full"
+  />
 
-            <Input
-              type="date"
-              value={form.joining_date}
-              onChange={e =>
-                setForm({ ...form, joining_date: e.target.value })
-              }
-              className="pt-4"
-            />
-          </div>
+  {/* 🔥 HOVER / FOCUS HINT */}
+  <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
+    Example: 25/03/2026
+  </div>
+</div>
 
         </div>
 
