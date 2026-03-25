@@ -1,0 +1,43 @@
+from fastapi import APIRouter, HTTPException
+from app.config.db import db
+from app.schemas.employee_schema import EmployeeCreate
+from app.utils.serializer import employee_serializer
+
+router = APIRouter()
+
+employees_collection = db["employees"]
+
+@router.post("/employees")
+async def create_employee(employee: EmployeeCreate):
+    try:
+        existing = await employees_collection.find_one({"employee_id": employee.employee_id})
+        if existing:
+            raise HTTPException(status_code=409, detail="Employee exists")
+
+        await employees_collection.insert_one(employee.model_dump())
+
+        return {"message": "Employee added"}
+
+    except Exception as e:
+        print("ERROR:", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/employees")
+async def get_employees():
+    try:
+        employees = []
+        async for emp in employees_collection.find():
+            employees.append(employee_serializer(emp))
+        return employees
+    except Exception as e:
+        print("ERROR:", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/employees/{employee_id}")
+async def delete_employee(employee_id: str):
+    result = await employees_collection.delete_one({"employee_id": employee_id})
+
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    return {"message": "Employee deleted successfully"}
