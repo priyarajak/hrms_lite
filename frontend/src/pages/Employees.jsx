@@ -188,6 +188,7 @@ export default function Employees() {
 
               <thead className="bg-white/10">
                 <tr>
+                    <th className="p-3 text-left">ID</th>
                   <th className="p-3 text-left">Name</th>
                   <th className="p-3 text-left">Email</th>
                   <th className="p-3 text-left">Dept</th>
@@ -198,6 +199,9 @@ export default function Employees() {
               <tbody>
                 {employees.map(emp => (
                   <tr key={emp.id} className="border-t border-white/10 even:bg-white/5">
+                    <td className="p-3 text-gray-300 font-mono">
+            {emp.employee_id}
+          </td>
                     <td className="p-3">{emp.full_name}</td>
                     <td className="p-3">{emp.email}</td>
                     <td className="p-3">{emp.department}</td>
@@ -224,6 +228,9 @@ export default function Employees() {
                 className="p-4 bg-white/5 border border-white/10 rounded-xl flex justify-between items-center"
               >
                 <div>
+                    <p className="text-xs text-gray-400 font-mono">
+          {emp.employee_id}
+        </p>
                   <p className="font-semibold">{emp.full_name}</p>
                   <p className="text-sm text-gray-400">{emp.email}</p>
                   <p className="text-sm">{emp.department}</p>
