@@ -37,10 +37,16 @@ export default function Employees() {
 
   // ADD EMPLOYEE
   const handleAdd = async () => {
-    if (!form.employee_id || !form.full_name || !form.email || !form.department || !form.joining_date) {
-      toast.error("All fields are required");
-      return;
-    }
+    if (
+  !form.employee_id ||
+  !form.full_name ||
+  !form.email ||
+  !form.department ||
+  !form.joining_date
+) {
+  toast.error("All fields are required");
+  return;
+}
 
     try {
       await API.post("/employees", form);
@@ -57,7 +63,13 @@ export default function Employees() {
 
       fetchEmployees();
     } catch (err) {
-      toast.error(err.response?.data?.detail || "Error adding employee");
+        const errorMsg =
+  err.response?.data?.detail?.[0]?.msg ||  // validation error
+  err.response?.data?.detail ||           // normal error
+  "Something went wrong";
+
+toast.error(errorMsg);
+      
     }
   };
 
