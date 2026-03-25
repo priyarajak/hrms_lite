@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import Header from "../components/layout/Header";
 
-
 export default function Dashboard() {
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [present, setPresent] = useState(0);
@@ -10,11 +9,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [employeeStatus, setEmployeeStatus] = useState([]);
 
-
-  const todayDate = new Date(); // ✅ Date object
-
-const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
-
+  const todayDate = new Date();
+  const todayISO = todayDate.toISOString().split("T")[0];
 
   const fetchData = async () => {
     try {
@@ -28,30 +24,30 @@ const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
       let absentCount = 0;
       let statusList = [];
 
-
       for (let emp of employees) {
         const res = await API.get(`/attendance/${emp.employee_id}`);
 
         const todayRecord = res.data.find(
           (r) => r.date === todayISO
         );
+
         let status = "Absent";
 
-
         if (todayRecord) {
-            status = todayRecord.status;
+          status = todayRecord.status;
         }
-          if (status === "Present") presentCount++;
-          else absentCount++;
+
+        if (status === "Present") presentCount++;
+        else absentCount++;
 
         statusList.push({
-    employee_id: emp.employee_id,
-    name: emp.full_name,
-    department: emp.department,
-    status
-  });
-        
+          employee_id: emp.employee_id,
+          name: emp.full_name,
+          department: emp.department,
+          status
+        });
       }
+
       setEmployeeStatus(statusList);
       setPresent(presentCount);
       setAbsent(absentCount);
@@ -68,37 +64,33 @@ const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto">
-      
-      
-  <Header title="Dashboard" />
-  
+    <div className="max-w-5xl mx-auto px-2 sm:px-0 space-y-8">
 
+      <Header title="Dashboard" />
+
+      {/* ================= CARDS ================= */}
       {loading ? (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {[1,2,3].map(i => (
             <div key={i} className="h-24 bg-white/10 animate-pulse rounded-xl" />
           ))}
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
-          {/* CARD 1 */}
-          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+          <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
             <p className="text-gray-400">Total Employees</p>
             <h2 className="text-3xl font-bold mt-2">{totalEmployees}</h2>
           </div>
 
-          {/* CARD 2 */}
-          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+          <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
             <p className="text-gray-400">Present Today</p>
             <h2 className="text-3xl font-bold text-green-400 mt-2">
               {present}
             </h2>
           </div>
 
-          {/* CARD 3 */}
-          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+          <div className="p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
             <p className="text-gray-400">Absent Today</p>
             <h2 className="text-3xl font-bold text-red-400 mt-2">
               {absent}
@@ -107,48 +99,64 @@ const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
 
         </div>
       )}
-      <div className="mt-8 bg-white/5 border border-white/10 rounded-2xl p-6">
 
-  <h2 className="text-lg font-medium mb-4">Today’s Attendance</h2>
+      {/* ================= TABLE ================= */}
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6">
 
-  {loading ? (
-    <div className="space-y-3">
-      {[1,2,3].map(i => (
-        <div key={i} className="h-10 bg-white/10 animate-pulse rounded-xl" />
-      ))}
-    </div>
-  ) : employeeStatus.length === 0 ? (
-    <p className="text-gray-400">No attendance marked for today yet</p>
-  ) : (
-    <table className="w-full">
-      <thead className="bg-white/10">
-        <tr>
-          <th className="p-3 text-left">ID</th>
-          <th className="p-3 text-left">Name</th>
-          <th className="p-3 text-left">Dept</th>
-          <th className="p-3 text-left">Status</th>
-        </tr>
-      </thead>
+        <h2 className="text-lg font-medium mb-4">Today’s Attendance</h2>
 
-      <tbody>
-        {employeeStatus.map((emp, i) => (
-          <tr key={i} className="border-t border-white/10">
-            <td className="p-3">{emp.employee_id}</td>
-            <td className="p-3">{emp.name}</td>
-            <td className="p-3">{emp.department}</td>
-            <td className={
-              emp.status === "Present"
-                ? "text-green-300"
-                : "text-red-300"
-            }>
-              {emp.status}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )}
-</div>
+        {loading ? (
+          <div className="space-y-3">
+            {[1,2,3].map(i => (
+              <div key={i} className="h-10 bg-white/10 animate-pulse rounded-xl" />
+            ))}
+          </div>
+        ) : employeeStatus.length === 0 ? (
+          <p className="text-gray-400 text-center">
+            No attendance marked for today yet
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+
+            <table className="w-full min-w-[500px]">
+
+              <thead className="bg-white/10">
+                <tr>
+                  <th className="p-3 text-left">ID</th>
+                  <th className="p-3 text-left">Name</th>
+                  <th className="p-3 text-left">Dept</th>
+                  <th className="p-3 text-left">Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {employeeStatus.map((emp, i) => (
+                  <tr key={i} className="border-t border-white/10 even:bg-white/5">
+
+                    <td className="p-3">{emp.employee_id}</td>
+                    <td className="p-3">{emp.name}</td>
+                    <td className="p-3">{emp.department}</td>
+
+                    <td className="p-3">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        emp.status === "Present"
+                          ? "bg-green-500/20 text-green-400"
+                          : "bg-red-500/20 text-red-400"
+                      }`}>
+                        {emp.status}
+                      </span>
+                    </td>
+
+                  </tr>
+                ))}
+              </tbody>
+
+            </table>
+
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }

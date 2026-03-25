@@ -21,12 +21,10 @@ export default function Attendance() {
     status: "Present"
   });
 
-  // fetch employees
   useEffect(() => {
     API.get("/employees").then(res => setEmployees(res.data));
   }, []);
 
-  // 🔍 FETCH ATTENDANCE
   const fetchAttendance = async () => {
     if (!filters.employee_id) {
       toast.error("Select employee");
@@ -57,7 +55,6 @@ export default function Attendance() {
     }
   };
 
-  // ✅ MARK ATTENDANCE
   const markAttendance = async () => {
     const emp = employees.find(e => e.employee_id === data.employee_id);
 
@@ -76,7 +73,6 @@ export default function Attendance() {
 
       toast.success("Attendance marked");
 
-      // CLEAR FORM
       setData({
         employee_id: "",
         date: "",
@@ -89,19 +85,20 @@ export default function Attendance() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <div className="max-w-5xl mx-auto space-y-8 px-2 sm:px-0">
 
       <Header title="Attendance" />
 
       {/* ================= MARK ATTENDANCE ================= */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-5">
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 space-y-5">
 
         <h2 className="text-lg font-medium">Mark Attendance</h2>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
 
+          {/* EMPLOYEE SELECT */}
           <select
-            className="w-full p-2 rounded-xl bg-white/5 border border-white/10"
+            className="w-full min-w-0 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={data.employee_id}
             onChange={(e) => setData({...data, employee_id: e.target.value})}
           >
@@ -113,18 +110,23 @@ export default function Attendance() {
             ))}
           </select>
 
-          <Input
-            type="date"
-            value={data.date}
-            onChange={(e) => setData({...data, date: e.target.value})}
-          />
+          {/* DATE INPUT FIXED */}
+          <div className="relative w-full min-w-0">
+            <Input
+              type="date"
+              value={data.date}
+              onChange={(e) => setData({...data, date: e.target.value})}
+              className="w-full min-w-0"
+            />
+          </div>
 
-          <div className="flex gap-4">
+          {/* STATUS BUTTONS */}
+          <div className="flex gap-3">
             <button
               onClick={() => setData({...data, status: "Present"})}
-              className={`flex-1 py-2 rounded-xl ${
+              className={`flex-1 py-2 rounded-xl transition ${
                 data.status === "Present"
-                  ? "bg-green-500"
+                  ? "bg-green-500 text-white"
                   : "bg-white/10"
               }`}
             >
@@ -133,9 +135,9 @@ export default function Attendance() {
 
             <button
               onClick={() => setData({...data, status: "Absent"})}
-              className={`flex-1 py-2 rounded-xl ${
+              className={`flex-1 py-2 rounded-xl transition ${
                 data.status === "Absent"
-                  ? "bg-red-500"
+                  ? "bg-red-500 text-white"
                   : "bg-white/10"
               }`}
             >
@@ -150,15 +152,16 @@ export default function Attendance() {
         </div>
       </div>
 
-      {/* ================= SEARCH + FILTER ================= */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-5">
+      {/* ================= SEARCH ================= */}
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 space-y-5">
 
         <h2 className="text-lg font-medium">Search Records</h2>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        {/* 🔥 FIXED GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
           <select
-            className="p-2 rounded-xl bg-white/5 border border-white/10"
+            className="w-full min-w-0 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={filters.employee_id}
             onChange={(e) =>
               setFilters({ ...filters, employee_id: e.target.value })
@@ -172,60 +175,66 @@ export default function Attendance() {
             ))}
           </select>
 
+          {/* FROM DATE */}
           <Input
             type="date"
             value={filters.from}
             onChange={(e) =>
               setFilters({ ...filters, from: e.target.value })
             }
+            className="w-full min-w-0"
           />
 
+          {/* TO DATE */}
           <Input
             type="date"
             value={filters.to}
             onChange={(e) =>
               setFilters({ ...filters, to: e.target.value })
             }
+            className="w-full min-w-0"
           />
 
         </div>
 
         <Button onClick={fetchAttendance}>Search</Button>
 
-        {/* RESULTS */}
-        <div className="mt-4">
-  <table className="w-full">
-    <thead className="bg-white/10">
-      <tr>
-        <th className="p-3 text-left">Date</th>
-        <th className="p-3 text-left">Status</th>
-      </tr>
-    </thead>
+        {/* RESULTS TABLE */}
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full min-w-[300px]">
+            <thead className="bg-white/10">
+              <tr>
+                <th className="p-3 text-left">Date</th>
+                <th className="p-3 text-left">Status</th>
+              </tr>
+            </thead>
 
-    <tbody>
-      {records.length === 0 ? (
-        <tr>
-          <td colSpan="2" className="text-center p-6 text-gray-400">
-            No records found
-          </td>
-        </tr>
-      ) : (
-        records.map((r, i) => (
-          <tr key={i} className="border-t border-white/10">
-            <td className="p-3">{r.date}</td>
-            <td className={
-              r.status === "Present"
-                ? "text-green-400"
-                : "text-red-400"
-            }>
-              {r.status}
-            </td>
-          </tr>
-        ))
-      )}
-    </tbody>
-  </table>
-</div>
+            <tbody>
+              {records.length === 0 ? (
+                <tr>
+                  <td colSpan="2" className="text-center p-6 text-gray-400">
+                    No records found
+                  </td>
+                </tr>
+              ) : (
+                records.map((r, i) => (
+                  <tr key={i} className="border-t border-white/10">
+                    <td className="p-3">{r.date}</td>
+                    <td className="p-3">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        r.status === "Present"
+                          ? "bg-green-500/20 text-green-400"
+                          : "bg-red-500/20 text-red-400"
+                      }`}>
+                        {r.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
       </div>
 

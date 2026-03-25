@@ -18,14 +18,12 @@ export default function Employees() {
     joining_date: ""
   });
 
-  // FETCH EMPLOYEES
   const fetchEmployees = async () => {
     try {
       setLoading(true);
       const res = await API.get("/employees");
       setEmployees(res.data);
     } catch (err) {
-      console.error(err);
       toast.error("Failed to load employees");
     }
     setLoading(false);
@@ -35,7 +33,6 @@ export default function Employees() {
     fetchEmployees();
   }, []);
 
-  // ADD EMPLOYEE
   const handleAdd = async () => {
     if (
       !form.employee_id ||
@@ -50,7 +47,6 @@ export default function Employees() {
 
     try {
       await API.post("/employees", form);
-
       toast.success("Employee added");
 
       setForm({
@@ -72,7 +68,6 @@ export default function Employees() {
     }
   };
 
-  // DELETE EMPLOYEE
   const handleDelete = async (id) => {
     try {
       await API.delete(`/employees/${id}`);
@@ -84,92 +79,94 @@ export default function Employees() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto px-2 sm:px-0 space-y-6">
 
       <Header title="Employees" />
 
       {/* ================= FORM ================= */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 space-y-5">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+        {/* 🔥 FIXED GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
 
-  {/* EMPLOYEE ID */}
-  <div className="relative group">
-    <Input
-      value={form.employee_id}
-      placeholder="Employee ID"
-      onChange={e => setForm({ ...form, employee_id: e.target.value })}
-    />
-  </div>
+          {/* EMPLOYEE ID */}
+          <div className="relative group min-w-0">
+            <Input
+              value={form.employee_id}
+              placeholder="Employee ID"
+              onChange={e => setForm({ ...form, employee_id: e.target.value })}
+              className="w-full min-w-0"
+            />
+          </div>
 
-  {/* NAME */}
-  <div className="relative group">
-    <Input
-      value={form.full_name}
-      placeholder="Full Name"
-      onChange={e => setForm({ ...form, full_name: e.target.value })}
-    />
+          {/* NAME */}
+          <div className="relative group min-w-0">
+            <Input
+              value={form.full_name}
+              placeholder="Full Name"
+              onChange={e => setForm({ ...form, full_name: e.target.value })}
+              className="w-full min-w-0"
+            />
 
-    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
-      group-hover:opacity-100 group-focus-within:opacity-100 
-      transition-all duration-200">
-      Example: Priya Rajak
-    </div>
-  </div>
+            <div className="absolute left-0 top-full mt-1 text-xs text-gray-400 opacity-0 
+              group-hover:opacity-100 group-focus-within:opacity-100 transition">
+              Example: Priya Rajak
+            </div>
+          </div>
 
-  {/* EMAIL */}
-  <div className="relative group">
-    <Input
-      value={form.email}
-      placeholder="Email Address"
-      onChange={e => setForm({ ...form, email: e.target.value })}
-    />
+          {/* EMAIL */}
+          <div className="relative group min-w-0">
+            <Input
+              value={form.email}
+              placeholder="Email Address"
+              onChange={e => setForm({ ...form, email: e.target.value })}
+              className="w-full min-w-0"
+            />
 
-    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
-      group-hover:opacity-100 group-focus-within:opacity-100 
-      transition-all duration-200">
-      Example: priya@email.com
-    </div>
-  </div>
+            <div className="absolute left-0 top-full mt-1 text-xs text-gray-400 opacity-0 
+              group-hover:opacity-100 group-focus-within:opacity-100 transition">
+              Example: priya@email.com
+            </div>
+          </div>
 
-  {/* DEPARTMENT */}
-  <div className="relative group">
-    <Input
-      value={form.department}
-      placeholder="Department"
-      onChange={e => setForm({ ...form, department: e.target.value })}
-    />
+          {/* DEPARTMENT */}
+          <div className="relative group min-w-0">
+            <Input
+              value={form.department}
+              placeholder="Department"
+              onChange={e => setForm({ ...form, department: e.target.value })}
+              className="w-full min-w-0"
+            />
 
-    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
-      group-hover:opacity-100 group-focus-within:opacity-100 
-      transition-all duration-200">
-      Example: HR / IT / Sales
-    </div>
-  </div>
+            <div className="absolute left-0 top-full mt-1 text-xs text-gray-400 opacity-0 
+              group-hover:opacity-100 group-focus-within:opacity-100 transition">
+              Example: HR / IT / Sales
+            </div>
+          </div>
 
-  {/* JOINING DATE */}
-  <div className="relative group">
+          {/* JOINING DATE (🔥 FIXED PROPERLY) */}
+          <div className="relative group min-w-0">
+            <Input
+              type="date"
+              value={form.joining_date}
+              onChange={(e) =>
+                setForm({ ...form, joining_date: e.target.value })
+              }
+              className="w-full min-w-0"
+            />
 
-    <Input
-  type="date"
-  value={form.joining_date}
-  onChange={(e) =>
-    setForm({ ...form, joining_date: e.target.value })
-  }
-  className="w-full min-w-0"
-/>
-<span className="absolute right-3 top-2.5 text-gray-400 text-sm">
-    📅
-  </span>
+            {/* ICON */}
+            <span className="absolute right-3 top-2.5 text-gray-400 text-sm pointer-events-none">
+              📅
+            </span>
 
-    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
-      group-hover:opacity-100 group-focus-within:opacity-100 
-      transition-all duration-200">
-      Joining Date
-    </div>
-  </div>
+            <div className="absolute left-0 top-full mt-1 text-xs text-gray-400 opacity-0 
+              group-hover:opacity-100 group-focus-within:opacity-100 transition">
+              Joining Date
+            </div>
+          </div>
 
-</div>
+        </div>
 
         <Button onClick={handleAdd}>Add Employee</Button>
       </div>
@@ -185,9 +182,10 @@ export default function Employees() {
         <p className="text-gray-400 text-center">No employees found</p>
       ) : (
         <>
-          {/* ================= DESKTOP TABLE ================= */}
-          <div className="hidden md:block">
-            <table className="w-full border border-white/10 rounded-xl overflow-hidden">
+          {/* ================= TABLE ================= */}
+          <div className="overflow-x-auto hidden md:block">
+            <table className="w-full min-w-[500px] border border-white/10 rounded-xl overflow-hidden">
+
               <thead className="bg-white/10">
                 <tr>
                   <th className="p-3 text-left">Name</th>
@@ -199,7 +197,7 @@ export default function Employees() {
 
               <tbody>
                 {employees.map(emp => (
-                  <tr key={emp.id} className="border-t border-white/10 hover:bg-white/5">
+                  <tr key={emp.id} className="border-t border-white/10 even:bg-white/5">
                     <td className="p-3">{emp.full_name}</td>
                     <td className="p-3">{emp.email}</td>
                     <td className="p-3">{emp.department}</td>
@@ -214,34 +212,31 @@ export default function Employees() {
                   </tr>
                 ))}
               </tbody>
+
             </table>
           </div>
 
-          {/* ================= MOBILE CARDS ================= */}
+          {/* ================= MOBILE ================= */}
           <div className="md:hidden space-y-3">
-            {employees.length === 0 ? (
-              <p className="text-center text-gray-400">No employees found</p>
-            ) : (
-              employees.map(emp => (
-                <div
-                  key={emp.id}
-                  className="p-4 bg-white/5 border border-white/10 rounded-xl flex justify-between items-center"
-                >
-                  <div>
-                    <p className="font-semibold">{emp.full_name}</p>
-                    <p className="text-sm text-gray-400">{emp.email}</p>
-                    <p className="text-sm">{emp.department}</p>
-                  </div>
-
-                  <button
-                    onClick={() => handleDelete(emp.employee_id)}
-                    className="p-2 rounded-lg hover:bg-red-500/20"
-                  >
-                    <Trash2 size={18} className="text-red-400" />
-                  </button>
+            {employees.map(emp => (
+              <div
+                key={emp.id}
+                className="p-4 bg-white/5 border border-white/10 rounded-xl flex justify-between items-center"
+              >
+                <div>
+                  <p className="font-semibold">{emp.full_name}</p>
+                  <p className="text-sm text-gray-400">{emp.email}</p>
+                  <p className="text-sm">{emp.department}</p>
                 </div>
-              ))
-            )}
+
+                <button
+                  onClick={() => handleDelete(emp.employee_id)}
+                  className="p-2 rounded-lg hover:bg-red-500/20"
+                >
+                  <Trash2 size={18} className="text-red-400" />
+                </button>
+              </div>
+            ))}
           </div>
         </>
       )}
