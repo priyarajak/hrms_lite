@@ -8,6 +8,7 @@ import Header from "../components/layout/Header";
 export default function Attendance() {
   const [employees, setEmployees] = useState([]);
   const [records, setRecords] = useState([]);
+  const [employeesLoading, setEmployeesLoading] = useState(true);
 
   const [filters, setFilters] = useState({
     employee_id: "",
@@ -22,9 +23,19 @@ export default function Attendance() {
   });
 
   useEffect(() => {
-    API.get("/employees").then(res => setEmployees(res.data));
-  }, []);
+  const fetchEmployees = async () => {
+    try {
+      setEmployeesLoading(true);
+      const res = await API.get("/employees");
+      setEmployees(res.data);
+    } catch (err) {
+      toast.error("Failed to load employees");
+    }
+    setEmployeesLoading(false);
+  };
 
+  fetchEmployees();
+}, []);
   const fetchAttendance = async () => {
     if (!filters.employee_id) {
       toast.error("Select employee");
@@ -98,16 +109,25 @@ export default function Attendance() {
 
           {/* EMPLOYEE SELECT */}
           <select
+          disabled={employeesLoading}
             className="w-full min-w-0 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={data.employee_id}
             onChange={(e) => setData({...data, employee_id: e.target.value})}
           >
-            <option value="">Select Employee</option>
-            {employees.map(emp => (
-              <option key={emp.id} value={emp.employee_id}>
-                {emp.full_name}
-              </option>
-            ))}
+            {employeesLoading ? (
+    <option>Loading employees...</option>
+  ) : employees.length === 0 ? (
+    <option>No employees found</option>
+  ) : (
+    <>
+      <option value="">Select Employee</option>
+      {employees.map(emp => (
+        <option key={emp.id} value={emp.employee_id}>
+          {emp.full_name}
+        </option>
+      ))}
+    </>
+  )}
           </select>
 
           {/* DATE INPUT FIXED */}
@@ -161,18 +181,27 @@ export default function Attendance() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 
           <select
+          disabled={employeesLoading}
             className="w-full min-w-0 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={filters.employee_id}
             onChange={(e) =>
               setFilters({ ...filters, employee_id: e.target.value })
             }
           >
-            <option value="">Select Employee</option>
-            {employees.map(emp => (
-              <option key={emp.id} value={emp.employee_id}>
-                {emp.full_name}
-              </option>
-            ))}
+            {employeesLoading ? (
+    <option>Loading employees...</option>
+  ) : employees.length === 0 ? (
+    <option>No employees found</option>
+  ) : (
+    <>
+      <option value="">Select Employee</option>
+      {employees.map(emp => (
+        <option key={emp.id} value={emp.employee_id}>
+          {emp.full_name}
+        </option>
+      ))}
+    </>
+  )}
           </select>
 
           {/* FROM DATE */}
