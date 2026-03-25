@@ -16,8 +16,7 @@ export default function Input({ type, ...props }) {
         type={type}
         {...props}
         className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200
-placeholder:text-gray-500 cursor-pointer"
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
       />
     </div>
   );

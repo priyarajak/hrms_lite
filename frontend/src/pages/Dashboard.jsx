@@ -84,13 +84,13 @@ const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
         <div className="grid md:grid-cols-3 gap-6">
 
           {/* CARD 1 */}
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
             <p className="text-gray-400">Total Employees</p>
             <h2 className="text-3xl font-bold mt-2">{totalEmployees}</h2>
           </div>
 
           {/* CARD 2 */}
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
             <p className="text-gray-400">Present Today</p>
             <h2 className="text-3xl font-bold text-green-400 mt-2">
               {present}
@@ -98,7 +98,7 @@ const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
           </div>
 
           {/* CARD 3 */}
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
             <p className="text-gray-400">Absent Today</p>
             <h2 className="text-3xl font-bold text-red-400 mt-2">
               {absent}
@@ -136,11 +136,11 @@ const todayISO = todayDate.toISOString().split("T")[0]; // ✅ for API
             <td className="p-3">{emp.employee_id}</td>
             <td className="p-3">{emp.name}</td>
             <td className="p-3">{emp.department}</td>
-            <td className={`px-2 py-1 rounded-full text-xs font-medium ${
-    emp.status === "Present"
-      ? "bg-green-500/20 text-green-400"
-      : "bg-red-500/20 text-red-400"
-  }`}>
+            <td className={
+              emp.status === "Present"
+                ? "text-green-300"
+                : "text-red-300"
+            }>
               {emp.status}
             </td>
           </tr>
