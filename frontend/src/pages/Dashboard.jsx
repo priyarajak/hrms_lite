@@ -10,8 +10,9 @@ export default function Dashboard() {
   const [employeeStatus, setEmployeeStatus] = useState([]);
 
   const todayDate = new Date();
-  const todayISO = todayDate.toISOString().split("T")[0];
-
+  const todayISO = new Date().toLocaleDateString("en-CA", {
+  timeZone: "Asia/Kolkata"
+});
   const fetchData = async () => {
     try {
       setLoading(true);
