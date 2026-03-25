@@ -149,9 +149,7 @@ export default function Employees() {
 
   {/* JOINING DATE */}
   <div className="relative group">
-    <label className="text-sm text-gray-400">
-    Joining Date
-  </label>
+
     <Input
       type="date"
       value={form.joining_date}
@@ -163,7 +161,7 @@ export default function Employees() {
     <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
       group-hover:opacity-100 group-focus-within:opacity-100 
       transition-all duration-200">
-      Example: 22/03/2026
+      Joining Date
     </div>
   </div>
 
