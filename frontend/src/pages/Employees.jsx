@@ -119,6 +119,7 @@ toast.error(errorMsg);
 
           <Input
             type="date"
+            placeholder="Joining date"
             value={form.joining_date}
             onChange={e => setForm({ ...form, joining_date: e.target.value })}
           />
