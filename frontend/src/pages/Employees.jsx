@@ -91,7 +91,7 @@ export default function Employees() {
       {/* ================= FORM ================= */}
       <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
 
-        <div className="grid md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
 
   {/* EMPLOYEE ID */}
   <div className="relative group">
@@ -151,12 +151,16 @@ export default function Employees() {
   <div className="relative group">
 
     <Input
-      type="date"
-      value={form.joining_date}
-      onChange={(e) =>
-        setForm({ ...form, joining_date: e.target.value })
-      }
-    />
+  type="date"
+  value={form.joining_date}
+  onChange={(e) =>
+    setForm({ ...form, joining_date: e.target.value })
+  }
+  className="w-full min-w-0"
+/>
+<span className="absolute right-3 top-2.5 text-gray-400 text-sm">
+    📅
+  </span>
 
     <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
       group-hover:opacity-100 group-focus-within:opacity-100 
