@@ -93,48 +93,85 @@ export default function Employees() {
 
         <div className="grid md:grid-cols-5 gap-3">
 
-          <Input
-            value={form.employee_id}
-            placeholder="ID"
-            onChange={e => setForm({ ...form, employee_id: e.target.value })}
-          />
+  {/* EMPLOYEE ID */}
+  <div className="relative group">
+    <Input
+      value={form.employee_id}
+      placeholder="Employee ID"
+      onChange={e => setForm({ ...form, employee_id: e.target.value })}
+    />
 
-          <Input
-            value={form.full_name}
-            placeholder="Name"
-            onChange={e => setForm({ ...form, full_name: e.target.value })}
-          />
-
-          <Input
-            value={form.email}
-            placeholder="Email"
-            onChange={e => setForm({ ...form, email: e.target.value })}
-          />
-
-          <Input
-            value={form.department}
-            placeholder="Dept"
-            onChange={e => setForm({ ...form, department: e.target.value })}
-          />
-
-          {/* 🔥 FIXED DATE INPUT */}
-          <div className="relative group">
-  <Input
-    type="date"
-    value={form.joining_date}
-    onChange={(e) =>
-      setForm({ ...form, joining_date: e.target.value })
-    }
-    className="w-full"
-  />
-
-  {/* 🔥 HOVER / FOCUS HINT */}
-  <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
-    Example: 25/03/2026
+    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
+      group-hover:opacity-100 group-hover:translate-y-0 
+      group-focus-within:opacity-100 group-focus-within:translate-y-0 
+      transition-all duration-200">
+      Example: EMP001
+    </div>
   </div>
-</div>
 
-        </div>
+  {/* NAME */}
+  <div className="relative group">
+    <Input
+      value={form.full_name}
+      placeholder="Full Name"
+      onChange={e => setForm({ ...form, full_name: e.target.value })}
+    />
+
+    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
+      group-hover:opacity-100 group-focus-within:opacity-100 
+      transition-all duration-200">
+      Example: Priya Rajak
+    </div>
+  </div>
+
+  {/* EMAIL */}
+  <div className="relative group">
+    <Input
+      value={form.email}
+      placeholder="Email Address"
+      onChange={e => setForm({ ...form, email: e.target.value })}
+    />
+
+    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
+      group-hover:opacity-100 group-focus-within:opacity-100 
+      transition-all duration-200">
+      Example: priya@email.com
+    </div>
+  </div>
+
+  {/* DEPARTMENT */}
+  <div className="relative group">
+    <Input
+      value={form.department}
+      placeholder="Department"
+      onChange={e => setForm({ ...form, department: e.target.value })}
+    />
+
+    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
+      group-hover:opacity-100 group-focus-within:opacity-100 
+      transition-all duration-200">
+      Example: HR / IT / Sales
+    </div>
+  </div>
+
+  {/* JOINING DATE */}
+  <div className="relative group">
+    <Input
+      type="date"
+      value={form.joining_date}
+      onChange={(e) =>
+        setForm({ ...form, joining_date: e.target.value })
+      }
+    />
+
+    <div className="absolute left-0 -bottom-6 text-xs text-gray-400 opacity-0 translate-y-1 
+      group-hover:opacity-100 group-focus-within:opacity-100 
+      transition-all duration-200">
+      Format: dd/mm/yyyy
+    </div>
+  </div>
+
+</div>
 
         <Button onClick={handleAdd}>Add Employee</Button>
       </div>
